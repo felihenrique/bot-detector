@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./backend:/home/app/
+    network_mode: "host"
+    # depends_on:
+    #   - 
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile-dev
+  #   volumes:
+  #     - ./frontend:/home/app/
+  #   network_mode: "host"
