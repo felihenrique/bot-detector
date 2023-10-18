@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine
+FROM golang:1.21-alpine
 
 RUN go install github.com/cosmtrek/air@latest
 
@@ -8,6 +8,6 @@ COPY . .
 
 RUN go mod download
 
-EXPOSE 8760
+EXPOSE 10658
 
 CMD ["air", "-c", ".air.toml"]

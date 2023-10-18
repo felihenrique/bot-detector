@@ -16,9 +16,6 @@ func readEnv() configStruct {
 	godotenv.Load("./config/.env")
 
 	port := os.Getenv("PORT")
-	result := utils.IsInt(port)
-	print("result: \n")
-	print(result)
 	if !utils.IsInt(port) {
 		panic("Port needs to be a number")
 	}

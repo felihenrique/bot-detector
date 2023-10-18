@@ -39,3 +39,12 @@ Utilizando a [inserção assincrona](https://clickhouse.com/docs/en/integrations
 
 A abordagem escolhida foi a persistência em memória, pois é a que oferece maior escalabilidade no longo prazo, visto que dá para manter a quantidade de requisições no banco constante com o passar do tempo (apesar do tamanho do batch aumentar). Além disso, essa também é a estrategia adotada pelo clickhouse (https://clickhouse.com/docs/en/optimize/asynchronous-inserts)
 
+# 18 de outubro de 2023
+
+## Estrutura projeto backend
+O projeto do backend terá a seguinte estrutura:
+- /app: Conterá toda a lógica de negócio da aplicação
+- /config: Onde se encontra arquivos de configuração e envs
+- /data: Conterá toda a lógica de escrita/acesso a dados
+- /http-server: Inicialização/setup do servidor http, controllers e configuração de rotas
+- /utils: Funções uteis em geral
