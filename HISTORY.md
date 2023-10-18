@@ -48,3 +48,11 @@ O projeto do backend terá a seguinte estrutura:
 - /data: Conterá toda a lógica de escrita/acesso a dados
 - /http-server: Inicialização/setup do servidor http, controllers e configuração de rotas
 - /utils: Funções uteis em geral
+
+## Estratégia usada para detecção de bots
+Duas abordagens serão usadas para detectar se a requisição veio de um bot:
+- Verificando se o IP é de uma cloud. Requests de IPS de clouds costumam ser bots.
+Foi utilizada uma lista pública de ips ranges das principais clouds: https://github.com/femueller/cloud-ip-ranges
+- Checando se o user agent é usado comumente em crawlers. Foi usado como referência o artigo:
+https://deviceatlas.com/blog/most-active-crawlers-list
+
