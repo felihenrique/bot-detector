@@ -46,13 +46,38 @@ O projeto do backend terá a seguinte estrutura:
 - /app: Conterá toda a lógica de negócio da aplicação
 - /config: Onde se encontra arquivos de configuração e envs
 - /data: Conterá toda a lógica de escrita/acesso a dados
-- /http-server: Inicialização/setup do servidor http, controllers e configuração de rotas
+- /server: Inicialização/setup do servidor http, controllers e configuração de rotas
 - /utils: Funções uteis em geral
 
 ## Estratégia usada para detecção de bots
 Duas abordagens serão usadas para detectar se a requisição veio de um bot:
-- Verificando se o IP é de uma cloud. Requests de IPS de clouds costumam ser bots.
-Foi utilizada uma lista pública de ips ranges das principais clouds: https://github.com/femueller/cloud-ip-ranges
+- Verificando se o IP pertence a uma cloud. Requests de IPS de clouds costumam ser bots.
+Foi utilizado os dados da lista de ranges do db-ip, contido na descrição do teste.
 - Checando se o user agent é usado comumente em crawlers. Foi usado como referência o artigo:
 https://deviceatlas.com/blog/most-active-crawlers-list
+
+# 19 de outubro de 2023
+
+## Problemas com o csv do db-ip
+<p>
+O arquivo fornecido no teste é bem grande (6gb). Parsear e processar esse arquivo em tempo de execução causaria lentidão na inicialização e potencialmente consumo exagerado de memória. Para o contexto do problema, precisamos apenas dos ranges de ip que são do tipo **hosting**.
+</p>
+<p>
+Tendo em vista reduzir o tamanho desse arquivo e acelerar a leitura dele, foi desenvolvido 2 scripts node.js fazem o seguinte:
+**prepare-csv.js**:
+1. Parseia o csv em stream
+2. Filtra os registros que são do tipo hosting
+3. Converte o range para o formato CIDR
+4. Salva em outro arquivo cada registro no formato JSON
+
+**compress-csv.js**:
+Lê o arquivo gerado pelo script prepare-csv.js e comprime usando gzip.
+</p>
+<p>
+O Arquivo resultante da preparação tem apenas 6mb e leva apenas alguns milisegundos para ser carregado. Além disso, quando carregada, a lista de ranges consumiu apenas cerca de 300mb de memória. A lógica para o carregamento desse arquivo está contida no arquivo backend/app/detector-loadips.go
+</p>
+
+
+## Estrategia usada na busca dos ips
+Devido a natureza dos dados (range de ips) e a quantidade de registros (varios milhões), a melhor solução encontrada para a busca nessa lista foi a **nginx radix tree**. A implementação da árvore usada se encontra na biblioteca go-iptree.
 

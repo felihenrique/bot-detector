@@ -1,3 +1,4 @@
 só carregar o .env se não for produção
 escrever sobre como foi feito o carregamento dos ips
 atualizar no history mudanças na estrutura
+Falar sobre o makefile
