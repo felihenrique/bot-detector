@@ -2,36 +2,38 @@ package config
 
 import (
 	"botdetector/utils"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-type configStruct struct {
-	ClickhouseUri string
-	Port          string
+type envConfig struct {
+	DbUri       string
+	Port        string
+	IpsFilePath string
 }
 
-func readEnv() configStruct {
+func readEnv() envConfig {
 	godotenv.Load("./config/.env")
 
 	port := os.Getenv("PORT")
 	if !utils.IsInt(port) {
-		panic("Port needs to be a number")
+		log.Fatal("Port needs to be a number")
 	}
 
 	dbUri := os.Getenv("CLICKHOUSE_URI")
-
 	if len(dbUri) == 0 {
-		panic("Clickhouse uri is required")
+		log.Fatal("Clickhouse uri is required")
 	}
 
-	config := configStruct{
-		ClickhouseUri: os.Getenv("CLICKHOUSE_URI"),
-		Port:          port,
+	config := envConfig{
+		DbUri:       os.Getenv("CLICKHOUSE_URI"),
+		Port:        port,
+		IpsFilePath: "./res/ips.csv.gz",
 	}
 
 	return config
 }
 
-var Config = readEnv()
+var Env = readEnv()

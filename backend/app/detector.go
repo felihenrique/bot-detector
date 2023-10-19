@@ -2,16 +2,36 @@ package app
 
 import (
 	"net"
+
+	"github.com/zmap/go-iptree/iptree"
 )
 
-type detector struct{}
-
-func (d detector) isBotAgent(agent string) bool {
-	return false
+type detector struct {
+	ips *iptree.IPTree
 }
 
-func (d detector) isDatacenterIp(ip net.IP) bool {
-	return false
+var Detector = new()
+
+func new() *detector {
+	d := detector{}
+	d.ips = iptree.New()
+	return &d
 }
 
-var Detector = detector{}
+func (d *detector) addIp(ipnet net.IPNet) {
+	d.ips.Add(&ipnet, 0)
+}
+
+func (d *detector) IsBotAgent(agent string) (bool, error) {
+	return false, nil
+}
+
+func (d *detector) IsHostingIp(netip net.IP) (bool, error) {
+	_, found, err := d.ips.Get(netip)
+
+	if err != nil {
+		return false, err
+	}
+
+	return found, nil
+}

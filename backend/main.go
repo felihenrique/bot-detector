@@ -1,9 +1,9 @@
 package main
 
 import (
-	"botdetector/http_server"
+	"botdetector/server"
 )
 
 func main() {
-	http_server.Start()
+	server.Start()
 }
