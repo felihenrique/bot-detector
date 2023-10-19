@@ -5,9 +5,19 @@ import (
 	"testing"
 )
 
+func TestLoadedIps(t *testing.T) {
+	if Detector.ips == nil {
+		t.Error("Ip tree should be initialized")
+	}
+
+	if Detector.length == 0 {
+		t.Error("Ip file should be loaded")
+	}
+}
+
 func TestDetectorIps(t *testing.T) {
-	ip1 := net.ParseIP("187.19.225.48")
-	ip2 := net.ParseIP("50.16.251.200")
+	ip1 := net.ParseIP("187.19.225.48") // non-bot ip
+	ip2 := net.ParseIP("50.16.251.200") // bot ip
 
 	result1, err1 := Detector.IsBotIp(ip1)
 	result2, err2 := Detector.IsBotIp(ip2)

@@ -1,9 +1,9 @@
 package app
 
 import (
-	"bufio"
 	"compress/gzip"
 	"encoding/json"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -24,25 +24,22 @@ func (d *detector) loadIps(path string) {
 	}
 	defer gzipReader.Close()
 
-	scanner := bufio.NewScanner(gzipReader)
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		var data []string
-		if err := json.Unmarshal([]byte(line), &data); err != nil {
-			log.Printf("Error parsing JSON: %v", err)
-			continue
-		}
-		lo.ForEach(data, func(item string, index int) {
-			_, ipnet, err := net.ParseCIDR(item)
-			if err != nil {
-				log.Fatal(err)
-			}
-			d.addIp(*ipnet)
-		})
-	}
-
-	if err := scanner.Err(); err != nil {
+	jsonData, err := io.ReadAll(gzipReader)
+	if err != nil {
 		log.Fatal(err)
 	}
+
+	var data []string
+	if err := json.Unmarshal(jsonData, &data); err != nil {
+		log.Fatalf("Error parsing JSON: %v", err)
+		return
+	}
+
+	lo.ForEach(data, func(item string, index int) {
+		_, ipnet, err := net.ParseCIDR(item)
+		if err != nil {
+			log.Fatal(err)
+		}
+		d.addIp(*ipnet)
+	})
 }

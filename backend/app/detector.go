@@ -8,7 +8,8 @@ import (
 )
 
 type detector struct {
-	ips *iptree.IPTree
+	ips    *iptree.IPTree
+	length int
 }
 
 var Detector = create()
@@ -23,6 +24,7 @@ func create() *detector {
 
 func (d *detector) addIp(ipnet net.IPNet) {
 	d.ips.Add(&ipnet, 0)
+	d.length += 1
 }
 
 func (d *detector) IsBotAgent(agent string) (bool, error) {

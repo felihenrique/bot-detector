@@ -18,7 +18,7 @@ func readEnv() envConfig {
 	godotenv.Load("./config/.env")
 
 	cwd, _ := os.Getwd()
-	ipsFile := "/res/ips.csv.gz"
+	ipsFile := "/res/ips.json.gz"
 
 	if os.Getenv("IS_TESTING") == "1" {
 		config := envConfig{

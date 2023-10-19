@@ -1,4 +1,10 @@
-só carregar o .env se não for produção
-escrever sobre como foi feito o carregamento dos ips
+
 atualizar no history mudanças na estrutura
 Falar sobre o makefile
+
+1 - Fazer filtro de agent
+2 - Escrever função escrita no clickhouse
+3 - Escrever função leitura clickhouse
+4 - Escrever testes finais
+5 - Fazer benchmark e colocar no history
+6 - Corrigir problemas formatação no history

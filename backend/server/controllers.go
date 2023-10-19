@@ -20,7 +20,10 @@ func (controllers) SaveRequest(c *gin.Context) {
 		return
 	}
 
-	app.Services.HydrateRequestData(&data)
+	if err := app.Services.HydrateRequestData(&data); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	c.JSON(200, data)
 }
