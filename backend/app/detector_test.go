@@ -5,17 +5,17 @@ import (
 	"testing"
 )
 
-func TestLoadMmdb(t *testing.T) {
+func TestDetectorIps(t *testing.T) {
 	ip1 := net.ParseIP("187.19.225.48")
 	ip2 := net.ParseIP("50.16.251.200")
 
-	result1, err1 := Detector.IsHostingIp(ip1)
-	result2, err2 := Detector.IsHostingIp(ip2)
+	result1, err1 := Detector.IsBotIp(ip1)
+	result2, err2 := Detector.IsBotIp(ip2)
 
-	if err1 != nil {
+	if result1 || err1 != nil {
 		t.Error(err1)
 	}
-	if err2 == nil {
+	if !result2 || err2 != nil {
 		t.Error(err2)
 	}
 

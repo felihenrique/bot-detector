@@ -9,13 +9,24 @@ import (
 )
 
 type envConfig struct {
-	DbUri       string
-	Port        string
-	IpsFilePath string
+	DbUri   string
+	Port    string
+	IpsFile string
 }
 
 func readEnv() envConfig {
 	godotenv.Load("./config/.env")
+
+	cwd, _ := os.Getwd()
+	ipsFile := "/res/ips.csv.gz"
+
+	if os.Getenv("IS_TESTING") == "1" {
+		config := envConfig{
+			IpsFile: cwd + "/.." + ipsFile,
+		}
+
+		return config
+	}
 
 	port := os.Getenv("PORT")
 	if !utils.IsInt(port) {
@@ -28,9 +39,9 @@ func readEnv() envConfig {
 	}
 
 	config := envConfig{
-		DbUri:       os.Getenv("CLICKHOUSE_URI"),
-		Port:        port,
-		IpsFilePath: "./res/ips.csv.gz",
+		DbUri:   os.Getenv("CLICKHOUSE_URI"),
+		Port:    port,
+		IpsFile: cwd + ipsFile,
 	}
 
 	return config

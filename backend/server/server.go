@@ -10,8 +10,8 @@ import (
 func Start() {
 	server := gin.Default()
 
-	server.GET("/requests", Controllers.Read)
-	server.POST("/requests", Controllers.Write)
+	server.GET("/requests", Controllers.ReadRequests)
+	server.POST("/requests", Controllers.SaveRequest)
 
 	err := server.Run("0.0.0.0:" + config.Env.Port)
 

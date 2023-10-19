@@ -2,7 +2,6 @@ package server
 
 import (
 	"botdetector/app"
-	"fmt"
 	"net"
 	"net/http"
 	"time"
@@ -13,20 +12,20 @@ import (
 
 type controllers struct{}
 
-func (controllers) Write(c *gin.Context) {
-	data := app.RequestData{}
+func (controllers) SaveRequest(c *gin.Context) {
+	var data app.RequestData
 
 	if err := c.ShouldBindWith(&data, binding.JSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	isBot := app.Services.CheckRequestData(data)
+	app.Services.HydrateRequestData(&data)
 
-	c.String(200, fmt.Sprintf("%t", isBot))
+	c.JSON(200, data)
 }
 
-func (controllers) Read(c *gin.Context) {
+func (controllers) ReadRequests(c *gin.Context) {
 	var query struct {
 		ChannelId string `form:"channel_id" binding:"required"`
 		Start     string `form:"start" binding:"required"`

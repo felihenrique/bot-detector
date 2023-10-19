@@ -11,12 +11,12 @@ type detector struct {
 	ips *iptree.IPTree
 }
 
-var Detector = new()
+var Detector = create()
 
-func new() *detector {
+func create() *detector {
 	d := detector{}
 	d.ips = iptree.New()
-	d.loadIps(config.Env.IpsFilePath)
+	d.loadIps(config.Env.IpsFile)
 
 	return &d
 }
@@ -29,8 +29,8 @@ func (d *detector) IsBotAgent(agent string) (bool, error) {
 	return false, nil
 }
 
-func (d *detector) IsHostingIp(netip net.IP) (bool, error) {
-	_, found, err := d.ips.Get(netip)
+func (d *detector) IsBotIp(ip net.IP) (bool, error) {
+	_, found, err := d.ips.Get(ip)
 
 	if err != nil {
 		return false, err
