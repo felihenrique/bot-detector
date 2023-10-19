@@ -1,6 +1,7 @@
 package app
 
 import (
+	"botdetector/config"
 	"net"
 
 	"github.com/zmap/go-iptree/iptree"
@@ -15,6 +16,8 @@ var Detector = new()
 func new() *detector {
 	d := detector{}
 	d.ips = iptree.New()
+	d.loadIps(config.Env.IpsFilePath)
+
 	return &d
 }
 

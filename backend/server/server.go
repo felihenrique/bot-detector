@@ -1,7 +1,6 @@
 package server
 
 import (
-	"botdetector/app"
 	"botdetector/config"
 	"log"
 
@@ -13,8 +12,6 @@ func Start() {
 
 	server.GET("/requests", Controllers.Read)
 	server.POST("/requests", Controllers.Write)
-
-	app.Detector.LoadIps(config.Env.IpsFilePath)
 
 	err := server.Run("0.0.0.0:" + config.Env.Port)
 

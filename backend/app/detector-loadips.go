@@ -11,7 +11,7 @@ import (
 	"github.com/samber/lo"
 )
 
-func (d *detector) LoadIps(path string) {
+func (d *detector) loadIps(path string) {
 	file, err := os.Open(path)
 	if err != nil {
 		log.Fatal(err)

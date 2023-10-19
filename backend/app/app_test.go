@@ -6,8 +6,6 @@ import (
 )
 
 func TestLoadMmdb(t *testing.T) {
-	Detector.LoadIps("../res/ips.csv.gz")
-
 	ip1 := net.ParseIP("187.19.225.48")
 	ip2 := net.ParseIP("50.16.251.200")
 
