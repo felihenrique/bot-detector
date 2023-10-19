@@ -5,11 +5,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    volumes:
-      - ./backend:/home/app/
     network_mode: "host"
-    # depends_on:
-    #   - 
+    env_file: 
+      - ./backend/config/.env
 
   # frontend:
   #   build:
