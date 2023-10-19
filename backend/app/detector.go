@@ -3,6 +3,7 @@ package app
 import (
 	"botdetector/config"
 	"net"
+	"strings"
 
 	"github.com/zmap/go-iptree/iptree"
 )
@@ -27,10 +28,6 @@ func (d *detector) addIp(ipnet net.IPNet) {
 	d.length += 1
 }
 
-func (d *detector) IsBotAgent(agent string) (bool, error) {
-	return false, nil
-}
-
 func (d *detector) IsBotIp(ip net.IP) (bool, error) {
 	_, found, err := d.ips.Get(ip)
 
@@ -39,4 +36,44 @@ func (d *detector) IsBotIp(ip net.IP) (bool, error) {
 	}
 
 	return found, nil
+}
+
+var crawlerAgents = []string{
+	"okhttp",
+	"googlebot",
+	"adsbot-google",
+	"headlesschrome",
+	"facebookexternalhit",
+	"python-requests",
+	"aiohttp",
+	"python-httpx",
+	"Python-urllib",
+	"python-urllib3",
+	"nessus",
+	"nessus::soap",
+	"nessus/190402",
+	"curl",
+	"bingbot",
+	"bingpreview",
+	"semrushbot",
+	"ahrefsbot",
+	"chrome-lighthouse",
+	"petalbot",
+	"applebot",
+	"pingdom.com_bot",
+	"axios",
+	"yandexbot",
+	"ptst",
+	"adsbot-google-mobile",
+	"siteauditbot",
+}
+
+func (d *detector) IsBotAgent(agent string) bool {
+	ag := strings.ToLower(agent)
+	for _, crawler := range crawlerAgents {
+		if strings.Contains(ag, crawler) {
+			return true
+		}
+	}
+	return false
 }

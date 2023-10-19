@@ -32,3 +32,19 @@ func TestDetectorIps(t *testing.T) {
 	t.Logf("IP1: %t", result1)
 	t.Logf("IP2: %t", result2)
 }
+
+func TestDetectorAgent(t *testing.T) {
+	botAgents := []string{
+		"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+		"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/104.0.5112.101 Safari/537.36",
+		"facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+		"Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4590.2 Mobile Safari/537.36 Chrome-Lighthouse",
+	}
+
+	for _, agent := range botAgents {
+		isBot := Detector.IsBotAgent(agent)
+		if !isBot {
+			t.Error("Not detected a bot agent")
+		}
+	}
+}

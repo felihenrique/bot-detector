@@ -7,8 +7,6 @@ import (
 	"log"
 	"net"
 	"os"
-
-	"github.com/samber/lo"
 )
 
 func (d *detector) loadIps(path string) {
@@ -35,11 +33,11 @@ func (d *detector) loadIps(path string) {
 		return
 	}
 
-	lo.ForEach(data, func(item string, index int) {
+	for _, item := range data {
 		_, ipnet, err := net.ParseCIDR(item)
 		if err != nil {
 			log.Fatal(err)
 		}
 		d.addIp(*ipnet)
-	})
+	}
 }

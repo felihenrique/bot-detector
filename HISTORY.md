@@ -81,3 +81,12 @@ O Arquivo resultante da preparação tem apenas cerca de 6mb e leva apenas algun
 ## Estrategia usada na busca dos ips
 Devido a natureza dos dados (range de ips) e a quantidade de registros (varios milhões), a melhor solução encontrada para a busca nessa lista foi a **nginx radix tree**. A implementação da árvore usada se encontra na biblioteca go-iptree.
 
+## Makefile
+Com vista de facilitar a execução de comandos mais comuns, foi criado um makefile com os seguintes scripts:
+- make start-dev: Inicia a aplicação no modo de desenvolvimento
+- make start-prod: Inicia a aplicação no modo de produção.
+- make test: Executa os testes da aplicação
+
+## Diferenciando ambiente de teste
+Como as variáveis de ambiente no ambiente de teste são diferentes, foi adicionado uma variável IS_TEST antes da execução do comando de teste no Makefile. Essa variável é checada no arquivo de configuração para gerar um objeto diferente.
+
