@@ -109,17 +109,17 @@ Foi utilizada a ferramenta locust para os testes de carga. Para simular um cená
 
 # Cenário teste inserção assincrona
 Interface locust:
-![Interface locust](https://github.com/felihenrique/botdetector/raw/master/prints/async/locust_async.png)
+![Interface locust](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/async/locust_async.png?token=GHSAT0AAAAAACAXNPVBGV6CNJQVMYL2TQDSZJSTYLA)
 Consumo de recursos:
-![Docker](https://github.com/felihenrique/botdetector/raw/master/prints/async/docker_async.png)
+![Docker](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/async/docker_async.png?token=GHSAT0AAAAAACAXNPVBQ2P47NAZVJLZOROYZJSTXYA)
 O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
 
 # Cenário uma inserção por request
 - Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado.
 Interface locust:
-![Interface locust](https://github.com/felihenrique/botdetector/raw/master/prints/without_async/locust.png)
+![Interface locust](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/without_async/locust.png?token=GHSAT0AAAAAACAXNPVBKL4S3FOFTVPUOJUCZJSTZIQ)
 Consumo de recursos:
-![Docker](https://github.com/felihenrique/botdetector/raw/master/prints/without_async/docker.png)
+![Docker](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/without_async/docker.png?token=GHSAT0AAAAAACAXNPVAKUFYA4ETNRBUMARMZJSTY7Q)
 O RPS que conseguimos ficou bem baixo, evidenciando o que foi escrito no início que o banco de dados seria um gargalo. O banco também ficou com CPU em quase 100%. Notou-se também que o consumo de memória atingiu próximo do limite depois de um tempo.
 
 Os teste evidenciam a eficiência da inserção assincrona e que a aplicação está preparada para receber até mais do que os 2k de requisições por segundo, mesmo com apenas uma instância, pois o uso de CPU/memória e o tempo de resposta ainda está bem baixo.
