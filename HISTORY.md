@@ -97,7 +97,7 @@ Como as variáveis de ambiente no ambiente de teste são diferentes, foi adicion
 
 # 20 de outubro de 2023
 
-A rota de escrita foi finalizada e alguns testes de carga foram feitos para medir a eficiência da aplicação. Dois cenários foram testado:
+A rota de escrita foi finalizada e alguns testes de carga foram feitos para medir a eficiência da aplicação. Dois cenários foram testados:
 - Com inserção assincrona de dados no banco (batches)
 - Fazendo uma inserção por requisição
 Foi utilizada a ferramenta locust para os testes de carga. Para simular um cenário com recursos mais limitados, foi configurado no docker-compose-prod para que o banco use no maximo 4gb de memória e 1 cpu e o backend use no máximo 2 cpus e 1gb de memória.
