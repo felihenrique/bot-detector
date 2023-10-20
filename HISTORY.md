@@ -129,3 +129,10 @@ Os testes evidenciam a eficiência da inserção assincrona e que a aplicação 
 ## Pré alocação de memória
 Uma coisa que foi notada no AsyncWriter é que estava alocando um slice sem tamanho. Dessa maneira várias realocações subsequentes aconteciam que poderiam vir a causar pequenas pausas no programa que podem limitar o throughput de requisições. 
 A solução foi prealocar um slice com capacidade de 15k e tamanho inicial 0. Esse valor deve ser reajustado de acordo com o throughput de requisições.
+
+## Considerações finais
+Algumas coisas não foram feitas porque o projeto se tornou muito grande, mas as seguintes melhorias poderiam ser feitas:
+- Testes no frontend e mais testes no backend
+- Processar dados via kafka ao invés da interface http. Isso é importante porque a interface http pode ser limitante no futuro, além de precisar ter um load balancer se quiser escalar horizontalmente. Pela maneira como a aplicação foi construida, essa adição não precisaria de muitas alterações, pois não há lógica de negócio atrelado à camada do servidor http.
+- Utilizar um query builder na camada de dados para evitar ficar processando strings.
+- Adicionar validação nos parametros de input da requisição.
