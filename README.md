@@ -35,3 +35,15 @@ To run the backend tests use:
 ```bash
 make test
 ```
+
+## Filling the database
+You can use locust script to fill the database with fake data. 
+1. Install locust:
+```bash
+pip install locust
+```
+2. Run locust:
+```bash
+locust --web-host=localhost
+```
+3. Open the interface and start the load test to fill the database.

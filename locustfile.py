@@ -22,7 +22,7 @@ class MyUser(HttpUser):
 
         # Criar o payload do corpo da solicitação
         payload = {
-            "player_id": 111,
+            "player_id": random.randint(1, 10),
             "ip": random_ip,
             "user_agent": "teste",
             "created_at": formatted_date
