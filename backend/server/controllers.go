@@ -2,10 +2,8 @@ package server
 
 import (
 	"botdetector/app"
-	"botdetector/data"
-	"net"
+	"botdetector/domain"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -13,52 +11,44 @@ import (
 
 type controllers struct{}
 
-func (controllers) SaveRequest(c *gin.Context) {
-	var item app.RequestLog
+func (controllers) SaveLog(c *gin.Context) {
+	var item domain.RequestLog
 
 	if err := c.ShouldBindWith(&item, binding.JSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := app.Services.HydrateRequestLog(&item); err != nil {
+	if err := app.Services.WriteLog(&item); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	data.AsyncWriter.Add(item)
-
-	// Código uma inserção por request
-	// if err := data.Database.InsertRequestLogs([]app.RequestLog{
-	// 	item,
-	// }); err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-	// 	return
-	// }
-
 	c.JSON(200, item)
 }
 
-func (controllers) ReadRequests(c *gin.Context) {
-	var query struct {
-		ChannelId string `form:"channel_id" binding:"required"`
-		Start     string `form:"start" binding:"required"`
-		End       string `form:"end" binding:"required"`
-	}
+type readLogsParams struct {
+	StartDate string `form:"start_date" binding:"required"`
+	EndDate   string `form:"end_date" binding:"required"`
+	PlayerId  int    `form:"player_id"`
+}
 
-	if err := c.ShouldBindQuery(&query); err != nil {
+func (controllers) ReadLogs(c *gin.Context) {
+	var params readLogsParams
+
+	if err := c.ShouldBindQuery(&params); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	item := app.RequestLog{
-		PlayerId:  123,
-		Ip:        net.IPv4(123, 144, 111, 123),
-		UserAgent: "teste",
-		CreatedAt: time.Now(),
+	items, err := app.Services.ReadLogs(app.ReadLogsParams(params))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
-	c.JSON(http.StatusOK, item)
+	c.JSON(http.StatusOK, items)
 }
 
 var Controllers = controllers{}

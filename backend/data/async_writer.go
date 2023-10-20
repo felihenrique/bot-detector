@@ -1,19 +1,19 @@
 package data
 
 import (
-	"botdetector/app"
+	"botdetector/domain"
 	"log"
 	"sync"
 	"time"
 )
 
 type asyncWriter struct {
-	buffer []app.RequestLog
+	buffer []domain.RequestLog
 	locker sync.Mutex
 }
 
 var AsyncWriter = asyncWriter{
-	buffer: make([]app.RequestLog, 0, 15000),
+	buffer: make([]domain.RequestLog, 0, 15000),
 }
 
 func (aw *asyncWriter) Start() {
@@ -24,10 +24,10 @@ func (aw *asyncWriter) Start() {
 		}
 		aw.locker.Lock()
 		bufferOld := aw.buffer
-		aw.buffer = make([]app.RequestLog, 0, 15000)
+		aw.buffer = make([]domain.RequestLog, 0, 15000)
 		aw.locker.Unlock()
 
-		err := Database.InsertRequestLogs(bufferOld)
+		err := Database.InsertLogBatch(bufferOld)
 
 		if err != nil {
 			log.Println("Error inserting logs to database: " + err.Error())
@@ -35,7 +35,7 @@ func (aw *asyncWriter) Start() {
 	}
 }
 
-func (aw *asyncWriter) Add(log app.RequestLog) {
+func (aw *asyncWriter) Add(log domain.RequestLog) {
 	aw.locker.Lock()
 	defer aw.locker.Unlock()
 

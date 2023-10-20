@@ -1,25 +1,46 @@
 package app
 
-import "time"
+import (
+	"botdetector/data"
+	"botdetector/domain"
+	"botdetector/utils"
+	"time"
+)
 
 type services struct{}
 
 var Services = services{}
 
-func (services) HydrateRequestLog(data *RequestLog) error {
-	agentResult := Detector.IsBotAgent(data.UserAgent)
-	ipRangeResult, err := Detector.IsBotIp(data.Ip)
+func (services) hydrateRequestLog(item *domain.RequestLog) error {
+	agentResult := Detector.IsBotAgent(item.UserAgent)
+	ipRangeResult, err := Detector.IsBotIp(item.Ip)
 
 	if err != nil {
 		return err
 	}
 
-	if (data.CreatedAt == time.Time{}) {
-		data.CreatedAt = time.Now()
+	if item.CreatedAt == "" {
+		item.CreatedAt = utils.ToIsoString(time.Now())
 	}
 
 	isBot := agentResult || ipRangeResult
-	data.IsBot = isBot
+	item.IsBot = isBot
+
+	return nil
+}
+
+func (services) ReadLogs(params ReadLogsParams) ([]data.BotsPerDayData, error) {
+	return data.Database.ReadBotsPerDay(data.ReadParams(params))
+}
+
+func (services) WriteLog(item *domain.RequestLog) error {
+	err := Services.hydrateRequestLog(item)
+	if err != nil {
+		return err
+	}
+
+	var itemCpy = *item
+	data.AsyncWriter.Add(itemCpy)
 
 	return nil
 }

@@ -15,8 +15,8 @@ func Start() {
 
 	go data.AsyncWriter.Start()
 
-	server.GET("/requests", Controllers.ReadRequests)
-	server.POST("/requests", Controllers.SaveRequest)
+	server.GET("/logs", Controllers.ReadLogs)
+	server.POST("/logs", Controllers.SaveLog)
 
 	err := server.Run("0.0.0.0:" + config.Env.Port)
 
