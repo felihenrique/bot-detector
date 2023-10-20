@@ -23,7 +23,7 @@ Outro ponto que pode vir a ser um gargalo é o banco de dados. Em picos de requi
 A maior parte das chamadas no banco de dados será para fazer escrita. A maneira mais eficiente de fazê-lo é através de inserções em batch. 
 </p>
 <p>
-Segundo a documentação do clickhouse de [melhores práticas](https://clickhouse.com/docs/en/cloud/bestpractices/bulk-inserts), o ideal é que os batches tenham ao menos 10k registros e chamadas subsequentes tenham ao menos 1s de intervalo, para que o banco possa completar as inserções da chamada anterior.
+Segundo a documentação do clickhouse de melhores práticas (https://clickhouse.com/docs/en/cloud/bestpractices/bulk-inserts), o ideal é que os batches tenham ao menos 10k registros e chamadas subsequentes tenham ao menos 1s de intervalo, para que o banco possa completar as inserções da chamada anterior.
 </p>
 <p>
 Há várias estratégias para fazer as inserções em bulk no clickhouse:
@@ -32,7 +32,7 @@ Há várias estratégias para fazer as inserções em bulk no clickhouse:
 Acumulando os dados em um buffer na memória e fazendo a escrita no banco a cada 1 segundo ou quando houver x registros. É a abordagem mais eficiente. A desvantagem é que no caso um termino inesperado da aplicação os dados no buffer são perdidos.
 </li>
 <li>
-Utilizando a [inserção assincrona](https://clickhouse.com/docs/en/integrations/go#async-insert). Uma desvantagem dessa abordagem é que o banco ainda assim estará sendo sobrecarregado de requisições.
+Utilizando a inserção assincrona (https://clickhouse.com/docs/en/integrations/go#async-insert). Uma desvantagem dessa abordagem é que o banco ainda assim estará sendo sobrecarregado de requisições.
 </li>
 </ul>
 </p>
@@ -62,7 +62,7 @@ https://deviceatlas.com/blog/most-active-crawlers-list
 
 ## Problemas com o csv do db-ip
 <p>
-O arquivo fornecido no teste é bem grande (6gb). Parsear e processar esse arquivo em tempo de execução causaria lentidão na inicialização e potencialmente consumo exagerado de memória. Para o contexto do problema, precisamos apenas dos ranges de ip que são do tipo **hosting**.
+O arquivo fornecido no teste é bem grande (6gb). Parsear e processar esse arquivo em tempo de execução causaria lentidão na inicialização e potencialmente consumo exagerado de memória. Para o contexto do problema, precisamos apenas dos ranges de ip que são do tipo <b>hosting</b>
 </p>
 <p>
 Tendo em vista reduzir o tamanho desse arquivo e acelerar a leitura dele, foi desenvolvido um script node.js faz o seguinte:
@@ -110,17 +110,18 @@ Foi utilizada a ferramenta locust para os testes de carga. Para simular um cená
 ### Cenário teste inserção assincrona
 Foram utilizados 6000 usuários concorrentes e spawn rate de 100
 Interface locust:
-![Interface locust](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/async/locust_async.png?token=GHSAT0AAAAAACAXNPVBGV6CNJQVMYL2TQDSZJSTYLA)
+https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/locust.png
 Consumo de recursos:
-![Docker](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/async/docker_async.png?token=GHSAT0AAAAAACAXNPVBQ2P47NAZVJLZOROYZJSTXYA)
+https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/docker.png
 O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
 
 ### Cenário uma inserção por request
 Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado.
 Interface locust:
-![Interface locust](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/without_async/locust.png?token=GHSAT0AAAAAACAXNPVBKL4S3FOFTVPUOJUCZJSTZIQ)
+https://github.com/felihenrique/bot-detector/blob/master/prints/async/locust_async.png
 Consumo de recursos:
-![Docker](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/without_async/docker.png?token=GHSAT0AAAAAACAXNPVAKUFYA4ETNRBUMARMZJSTY7Q)
+https://github.com/felihenrique/bot-detector/blob/master/prints/async/docker_async.png
+
 O RPS que conseguimos ficou bem baixo, evidenciando o que foi escrito no início que o banco de dados seria um gargalo. O banco também ficou com CPU em quase 100%. Notou-se também que o consumo de memória atingiu próximo do limite depois de um tempo.
 
 Os testes evidenciam a eficiência da inserção assincrona e que a aplicação está preparada para receber até mais do que os 2k de requisições por segundo, mesmo com apenas uma instância, pois o uso de CPU/memória e o tempo de resposta ainda está bem baixo.
