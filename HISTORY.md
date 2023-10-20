@@ -108,11 +108,11 @@ Foi utilizada a ferramenta locust para os testes de carga. Para simular um cená
 - Para que o throughput de requisições não fique limitado é necessário instanciar um master e ao menos 3 workers do locust. Para isso foram feitos comandos no Makefile (make locust-master e make locust-worker).
 
 ### Cenário teste inserção assincrona
-Foram utilizados 6000 usuários concorrentes e spawn rate de 100
-Interface locust:
-https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/locust.png
-Consumo de recursos:
-https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/docker.png
+<p>Foram utilizados 6000 usuários concorrentes e spawn rate de 100 </p>
+<p>Interface locust: 
+https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/locust.png </p>
+<p>Consumo de recursos: <br>
+https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/docker.png </p>
 O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
 
 ### Cenário uma inserção por request
