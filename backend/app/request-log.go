@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type RequestData struct {
+type RequestLog struct {
 	PlayerId  int       `json:"player_id" binding:"required"`
 	Ip        net.IP    `json:"ip" binding:"required"`
 	UserAgent string    `json:"user_agent" binding:"required"`

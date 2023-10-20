@@ -1,4 +1,5 @@
-1 - Fazer filtro de agent
+1 - Modificar o created at para nao vir da requisição e ser inserido automaticamente
+na definição da tabela
 2 - Escrever função escrita no clickhouse
 3 - Escrever função leitura clickhouse
 4 - Escrever testes finais

@@ -49,6 +49,7 @@ O projeto do backend terá a seguinte estrutura:
 - /server: Inicialização/setup do servidor http, controllers e configuração de rotas
 - /utils: Funções uteis em geral
 - /res: Arquivos de recursos
+- /migrations: Migrations da aplicação
 
 ## Estratégia usada para detecção de bots
 Duas abordagens serão usadas para detectar se a requisição veio de um bot:
@@ -86,6 +87,7 @@ Com vista de facilitar a execução de comandos mais comuns, foi criado um makef
 - make start-dev: Inicia a aplicação no modo de desenvolvimento
 - make start-prod: Inicia a aplicação no modo de produção.
 - make test: Executa os testes da aplicação
+- make migrate: Cria a tabela de request log
 
 ## Diferenciando ambiente de teste
 Como as variáveis de ambiente no ambiente de teste são diferentes, foi adicionado uma variável IS_TEST antes da execução do comando de teste no Makefile. Essa variável é checada no arquivo de configuração para gerar um objeto diferente.

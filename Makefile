@@ -4,3 +4,5 @@ start-prod:
 	docker-compose -f docker-compose-prod.yml up --build
 test:
 	cd backend && IS_TESTING=1 go test ./...
+migrate:
+	cd backend && go run migrations/migrations.go

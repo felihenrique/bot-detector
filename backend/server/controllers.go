@@ -2,6 +2,7 @@ package server
 
 import (
 	"botdetector/app"
+	"botdetector/data"
 	"net"
 	"net/http"
 	"time"
@@ -13,19 +14,26 @@ import (
 type controllers struct{}
 
 func (controllers) SaveRequest(c *gin.Context) {
-	var data app.RequestData
+	var item app.RequestLog
 
-	if err := c.ShouldBindWith(&data, binding.JSON); err != nil {
+	if err := c.ShouldBindWith(&item, binding.JSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := app.Services.HydrateRequestData(&data); err != nil {
+	if err := app.Services.HydrateRequestLog(&item); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(200, data)
+	if err := data.Database.InsertRequestLogs([]app.RequestLog{
+		item,
+	}); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, item)
 }
 
 func (controllers) ReadRequests(c *gin.Context) {
@@ -40,14 +48,14 @@ func (controllers) ReadRequests(c *gin.Context) {
 		return
 	}
 
-	data := app.RequestData{
+	item := app.RequestLog{
 		PlayerId:  123,
 		Ip:        net.IPv4(123, 144, 111, 123),
 		UserAgent: "teste",
 		CreatedAt: time.Now(),
 	}
 
-	c.JSON(http.StatusOK, data)
+	c.JSON(http.StatusOK, item)
 }
 
 var Controllers = controllers{}

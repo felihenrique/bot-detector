@@ -10,6 +10,16 @@ services:
     network_mode: "host"
     # depends_on:
     #   - 
+  
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest-alpine
+    restart: always
+    environment:
+      CLICKHOUSE_DB: 'vturb'
+      CLICKHOUSE_USER: 'bot-detector'
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+      CLICKHOUSE_PASSWORD: 'bot-detector'
+    network_mode: "host"
 
   # frontend:
   #   build:

@@ -2,6 +2,7 @@ package server
 
 import (
 	"botdetector/config"
+	"botdetector/data"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,8 @@ import (
 
 func Start() {
 	server := gin.Default()
+
+	data.Database.Connect(config.Env.DbUri)
 
 	server.GET("/requests", Controllers.ReadRequests)
 	server.POST("/requests", Controllers.SaveRequest)

@@ -4,7 +4,7 @@ type services struct{}
 
 var Services = services{}
 
-func (services) HydrateRequestData(data *RequestData) error {
+func (services) HydrateRequestLog(data *RequestLog) error {
 	agentResult := Detector.IsBotAgent(data.UserAgent)
 	ipRangeResult, err := Detector.IsBotIp(data.Ip)
 
