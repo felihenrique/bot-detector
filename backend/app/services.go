@@ -1,5 +1,7 @@
 package app
 
+import "time"
+
 type services struct{}
 
 var Services = services{}
@@ -10,6 +12,10 @@ func (services) HydrateRequestLog(data *RequestLog) error {
 
 	if err != nil {
 		return err
+	}
+
+	if (data.CreatedAt == time.Time{}) {
+		data.CreatedAt = time.Now()
 	}
 
 	isBot := agentResult || ipRangeResult
