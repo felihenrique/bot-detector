@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Esse repositório conterá a solução para o teste proposto para a vaga de senior full stack developer na vturb, cujo a descrição se encontra no arquivo DESCRICAO_TESTE.md
+Esse repositório conterá a solução para o teste proposto para a vaga de senior full stack developer na vturb, cujo a descrição se encontra no repositório: https://github.com/vturb/fullstack-senior-challenge
 
 ## Requisitos da aplicação
 
