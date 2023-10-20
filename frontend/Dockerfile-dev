@@ -1,0 +1,11 @@
+FROM node:16-alpine
+
+WORKDIR /home/app
+
+COPY . .
+
+RUN yarn && yarn cache clean
+
+EXPOSE 10200
+
+CMD ["yarn", "dev"]

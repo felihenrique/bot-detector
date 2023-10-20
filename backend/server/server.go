@@ -5,6 +5,7 @@ import (
 	"botdetector/data"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,11 @@ func Start() {
 	data.Database.Connect(config.Env.DbUri)
 
 	go data.AsyncWriter.Start()
+
+	server.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"PUT", "PATCH"},
+	}))
 
 	server.GET("/logs", Controllers.ReadLogs)
 	server.POST("/logs", Controllers.SaveLog)

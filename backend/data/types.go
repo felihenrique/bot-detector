@@ -7,7 +7,7 @@ type ReadParams struct {
 }
 
 type BotsPerDayData struct {
-	BotQuantity int
-	PlayerId    int
-	Date        string
+	BotQuantity int    `json:"bot_quantity"`
+	PlayerId    int    `json:"player_id"`
+	Date        string `json:"date"`
 }
