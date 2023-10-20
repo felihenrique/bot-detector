@@ -13,7 +13,7 @@ type asyncWriter struct {
 }
 
 var AsyncWriter = asyncWriter{
-	buffer: make([]app.RequestLog, 0, 10000),
+	buffer: make([]app.RequestLog, 0, 15000),
 }
 
 func (aw *asyncWriter) Start() {
@@ -24,7 +24,7 @@ func (aw *asyncWriter) Start() {
 		}
 		aw.locker.Lock()
 		bufferOld := aw.buffer
-		aw.buffer = make([]app.RequestLog, 0, 10000)
+		aw.buffer = make([]app.RequestLog, 0, 15000)
 		aw.locker.Unlock()
 
 		err := Database.InsertRequestLogs(bufferOld)

@@ -102,24 +102,29 @@ A rota de escrita foi finalizada e alguns testes de carga foram feitos para medi
 - Fazendo uma inserção por requisição
 Foi utilizada a ferramenta locust para os testes de carga. Para simular um cenário com recursos mais limitados, foi configurado no docker-compose-prod para que o banco use no maximo 4gb de memória e 1 cpu e o backend use no máximo 2 cpus e 1gb de memória.
 
-# Configuração do ambiente de testes
+## Configuração do ambiente de testes
 
 - O setup dos testes está no arquivo locustfile.py
 - Para que o throughput de requisições não fique limitado é necessário instanciar um master e ao menos 3 workers do locust. Para isso foram feitos comandos no Makefile (make locust-master e make locust-worker).
 
-# Cenário teste inserção assincrona
+### Cenário teste inserção assincrona
+Foram utilizados 6000 usuários concorrentes e spawn rate de 100
 Interface locust:
 ![Interface locust](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/async/locust_async.png?token=GHSAT0AAAAAACAXNPVBGV6CNJQVMYL2TQDSZJSTYLA)
 Consumo de recursos:
 ![Docker](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/async/docker_async.png?token=GHSAT0AAAAAACAXNPVBQ2P47NAZVJLZOROYZJSTXYA)
 O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
 
-# Cenário uma inserção por request
-- Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado.
+### Cenário uma inserção por request
+Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado.
 Interface locust:
 ![Interface locust](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/without_async/locust.png?token=GHSAT0AAAAAACAXNPVBKL4S3FOFTVPUOJUCZJSTZIQ)
 Consumo de recursos:
 ![Docker](https://raw.githubusercontent.com/felihenrique/bot-detector/master/prints/without_async/docker.png?token=GHSAT0AAAAAACAXNPVAKUFYA4ETNRBUMARMZJSTY7Q)
 O RPS que conseguimos ficou bem baixo, evidenciando o que foi escrito no início que o banco de dados seria um gargalo. O banco também ficou com CPU em quase 100%. Notou-se também que o consumo de memória atingiu próximo do limite depois de um tempo.
 
-Os teste evidenciam a eficiência da inserção assincrona e que a aplicação está preparada para receber até mais do que os 2k de requisições por segundo, mesmo com apenas uma instância, pois o uso de CPU/memória e o tempo de resposta ainda está bem baixo.
+Os testes evidenciam a eficiência da inserção assincrona e que a aplicação está preparada para receber até mais do que os 2k de requisições por segundo, mesmo com apenas uma instância, pois o uso de CPU/memória e o tempo de resposta ainda está bem baixo.
+
+## Pré alocação de memória
+Uma coisa que foi notada no AsyncWriter é que estava alocando um slice sem tamanho. Dessa maneira várias realocações subsequentes aconteciam que poderiam vir a causar pequenas pausas no programa que podem limitar o throughput de requisições. 
+A solução foi prealocar um slice com capacidade de 15k e tamanho inicial 0. Esse valor deve ser reajustado de acordo com o throughput de requisições.
