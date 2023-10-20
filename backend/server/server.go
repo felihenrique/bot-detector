@@ -13,6 +13,8 @@ func Start() {
 
 	data.Database.Connect(config.Env.DbUri)
 
+	go data.AsyncWriter.Start()
+
 	server.GET("/requests", Controllers.ReadRequests)
 	server.POST("/requests", Controllers.SaveRequest)
 

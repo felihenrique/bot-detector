@@ -88,7 +88,38 @@ Com vista de facilitar a execução de comandos mais comuns, foi criado um makef
 - make start-prod: Inicia a aplicação no modo de produção.
 - make test: Executa os testes da aplicação
 - make migrate: Cria a tabela de request log
+- make locust-master Executa o master do master (precisa de 1)
+- make locust-worker Executa um worker para o locust (precisa de ao menos 1)
 
 ## Diferenciando ambiente de teste
 Como as variáveis de ambiente no ambiente de teste são diferentes, foi adicionado uma variável IS_TEST antes da execução do comando de teste no Makefile. Essa variável é checada no arquivo de configuração para gerar um objeto diferente.
 
+
+# 20 de outubro de 2023
+
+A rota de escrita foi finalizada e alguns testes de carga foram feitos para medir a eficiência da aplicação. Dois cenários foram testado:
+- Com inserção assincrona de dados no banco (batches)
+- Fazendo uma inserção por requisição
+Foi utilizada a ferramenta locust para os testes de carga. Para simular um cenário com recursos mais limitados, foi configurado no docker-compose-prod para que o banco use no maximo 4gb de memória e 1 cpu e o backend use no máximo 2 cpus e 1gb de memória.
+
+# Configuração do ambiente de testes
+
+- O setup dos testes está no arquivo locustfile.py
+- Para que o throughput de requisições não fique limitado é necessário instanciar um master e ao menos 3 workers do locust. Para isso foram feitos comandos no Makefile (make locust-master e make locust-worker).
+
+# Cenário teste inserção assincrona
+Interface locust:
+![Interface locust](https://github.com/felihenrique/botdetector/raw/master/prints/async/locust_async.png)
+Consumo de recursos:
+![Docker](https://github.com/felihenrique/botdetector/raw/master/prints/async/docker_async.png)
+O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
+
+# Cenário uma inserção por request
+- Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado.
+Interface locust:
+![Interface locust](https://github.com/felihenrique/botdetector/raw/master/prints/without_async/locust.png)
+Consumo de recursos:
+![Docker](https://github.com/felihenrique/botdetector/raw/master/prints/without_async/docker.png)
+O RPS que conseguimos ficou bem baixo, evidenciando o que foi escrito no início que o banco de dados seria um gargalo. O banco também ficou com CPU em quase 100%. Notou-se também que o consumo de memória atingiu próximo do limite depois de um tempo.
+
+Os teste evidenciam a eficiência da inserção assincrona e que a aplicação está preparada para receber até mais do que os 2k de requisições por segundo, mesmo com apenas uma instância, pois o uso de CPU/memória e o tempo de resposta ainda está bem baixo.

@@ -26,12 +26,15 @@ func (controllers) SaveRequest(c *gin.Context) {
 		return
 	}
 
-	if err := data.Database.InsertRequestLogs([]app.RequestLog{
-		item,
-	}); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+	data.AsyncWriter.Add(item)
+
+	// Código uma inserção por request
+	// if err := data.Database.InsertRequestLogs([]app.RequestLog{
+	// 	item,
+	// }); err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 	return
+	// }
 
 	c.JSON(200, item)
 }

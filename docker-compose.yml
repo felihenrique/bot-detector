@@ -8,12 +8,16 @@ services:
     volumes:
       - ./backend:/home/app/
     network_mode: "host"
-    # depends_on:
-    #   - 
+    cpus: 1
+    mem_limit: "1G"
+    depends_on:
+      - clickhouse
   
   clickhouse:
     image: clickhouse/clickhouse-server:latest-alpine
     restart: always
+    cpus: 1
+    mem_limit: "4G"
     environment:
       CLICKHOUSE_DB: 'vturb'
       CLICKHOUSE_USER: 'bot-detector'
