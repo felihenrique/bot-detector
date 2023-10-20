@@ -109,18 +109,18 @@ Foi utilizada a ferramenta locust para os testes de carga. Para simular um cená
 
 ### Cenário teste inserção assincrona
 <p>Foram utilizados 6000 usuários concorrentes e spawn rate de 100 </p>
+<p>Interface locust:
+https://github.com/felihenrique/bot-detector/blob/master/prints/async/locust_async.png</p>
+<p>Consumo de recursos:
+https://github.com/felihenrique/bot-detector/blob/master/prints/async/docker_async.png</p>
+O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
+
+### Cenário uma inserção por request
+<p>Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado. </p>
 <p>Interface locust: 
 https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/locust.png </p>
 <p>Consumo de recursos: <br>
 https://github.com/felihenrique/bot-detector/blob/master/prints/without_async/docker.png </p>
-O RPS (requisições por segundo) ficou em média de 2k ou 120k por minuto. Além disso, o consumo de memória e cpu, tanto do backend quanto do banco, se mantiveram estáveis. Podemos notar também que o error rate foi de 0%.
-
-### Cenário uma inserção por request
-Foram utilizados 500 usuários concorrentes e spawn rate de 100, acima desses valores o error rate ficava acima de 50%, porque o banco começou a ficar sobrecarregado.
-Interface locust:
-https://github.com/felihenrique/bot-detector/blob/master/prints/async/locust_async.png
-Consumo de recursos:
-https://github.com/felihenrique/bot-detector/blob/master/prints/async/docker_async.png
 
 O RPS que conseguimos ficou bem baixo, evidenciando o que foi escrito no início que o banco de dados seria um gargalo. O banco também ficou com CPU em quase 100%. Notou-se também que o consumo de memória atingiu próximo do limite depois de um tempo.
 
