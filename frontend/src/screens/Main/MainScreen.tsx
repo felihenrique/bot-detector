@@ -40,7 +40,6 @@ function MainScreen() {
     return Object.values(dataMap) as any;
   }, [data]);
 
-  // console.log(data, playersNames, aggData, unqPlayers)
   return (
     <Container>
       <FilterComponent

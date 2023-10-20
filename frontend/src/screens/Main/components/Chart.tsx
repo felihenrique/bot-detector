@@ -1,5 +1,5 @@
 import { Paper, Typography } from "@mui/material";
-import React, { useState } from "react";
+
 import {
   LineChart,
   Line,
@@ -10,13 +10,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-const data = [
-  { date: "2023-10-01", value1: 10, value2: 15, value3: 20 },
-  { date: "2023-10-02", value1: 12, value2: 18, value3: 25 },
-  { date: "2023-10-03", value1: 15, value2: 22, value3: 30 },
-  // Adicione mais dados conforme necessário
-];
 
 interface ChartProps {
   players: string[];
