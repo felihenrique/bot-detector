@@ -137,4 +137,4 @@ Algumas coisas não foram feitas porque o projeto se tornou muito grande, mas as
 - Processar dados via kafka ao invés da interface http. Isso é importante porque a interface http pode ser limitante no futuro, além de precisar ter um load balancer se quiser escalar horizontalmente. Pela maneira como a aplicação foi construida, essa adição não precisaria de muitas alterações, pois não há lógica de negócio atrelado à camada do servidor http.
 - Utilizar um query builder na camada de dados para evitar ficar processando strings.
 - Adicionar validação nos parametros de input da requisição.
-- Adicionar mais funções no frotend.
+- Adicionar mais funções no frontend.
