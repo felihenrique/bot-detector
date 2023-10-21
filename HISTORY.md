@@ -100,7 +100,7 @@ Como as variáveis de ambiente no ambiente de teste são diferentes, foi adicion
 
 A rota de escrita foi finalizada e alguns testes de carga foram feitos para medir a eficiência da aplicação. Dois cenários foram testados:
 - Com inserção assincrona de dados no banco (batches)
-- Fazendo uma inserção por requisição <br>
+- Fazendo uma inserção por requisição <br><br>
 Foi utilizada a ferramenta locust para os testes de carga. Para simular um cenário com recursos mais limitados, foi configurado no docker-compose para que o banco use no maximo 4gb de memória e 1 cpu e o backend use no máximo 2 cpus e 1gb de memória.
 
 ## Configuração do ambiente de testes
@@ -137,3 +137,4 @@ Algumas coisas não foram feitas porque o projeto se tornou muito grande, mas as
 - Processar dados via kafka ao invés da interface http. Isso é importante porque a interface http pode ser limitante no futuro, além de precisar ter um load balancer se quiser escalar horizontalmente. Pela maneira como a aplicação foi construida, essa adição não precisaria de muitas alterações, pois não há lógica de negócio atrelado à camada do servidor http.
 - Utilizar um query builder na camada de dados para evitar ficar processando strings.
 - Adicionar validação nos parametros de input da requisição.
+- Adicionar mais funções no frotend.
