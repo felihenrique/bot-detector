@@ -47,6 +47,7 @@ O projeto do backend terá a seguinte estrutura:
 - /config: Onde se encontra arquivos de configuração e envs
 - /data: Conterá toda a lógica de escrita/acesso a dados
 - /server: Inicialização/setup do servidor http, controllers e configuração de rotas
+- /domain: Entidades do dominio
 - /utils: Funções uteis em geral
 - /res: Arquivos de recursos
 - /migrations: Migrations da aplicação
@@ -88,7 +89,7 @@ Com vista de facilitar a execução de comandos mais comuns, foi criado um makef
 - make start-prod: Inicia a aplicação no modo de produção.
 - make test: Executa os testes da aplicação
 - make migrate: Cria a tabela de request log
-- make locust-master Executa o master do master (precisa de 1)
+- make locust-master Executa o master do locust (precisa de 1)
 - make locust-worker Executa um worker para o locust (precisa de ao menos 1)
 
 ## Diferenciando ambiente de teste
