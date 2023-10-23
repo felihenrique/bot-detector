@@ -48,7 +48,7 @@ function MainScreenFilters(props: FilterProps) {
             <InputLabel id="player-select-label">Player</InputLabel>
             <Select
               labelId="player-select-label"
-              label="Jogador"
+              label="Player"
               value={filters.player}
               onChange={(e) => updateFilters({ player: Number(e.target.value)})}
             >
